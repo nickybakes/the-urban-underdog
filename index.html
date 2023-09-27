@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>The Urban Underdog - Nick Baker</title>
+	<link rel="icon" type="image/png" sizes="32x32" href="media/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="media/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="media/favicon-16x16.png">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Goldman&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="styles/mainStyle.css">
+</head>
+
+<body>
+	<div class="message"></div>
+	<div id="gameFont">a</div>
+	<header>
+		<h1><img class="logo" src="media/urban-underdog-logo.png" alt="The Urban Underdog logo."></h1>
+		<p>Put your pedal to the metal as &quot;The Urban Underdog&quot; and race for your best time on randomly
+			generated racetracks in this fast-paced, 3D driving game!
+		</p>
+	</header>
+	<!-- External libraries -->
+	<!-- https://github.com/pixijs/pixi.js?utm_source=html5weekly -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.3/pixi.min.js"></script>
+	<!--  https://github.com/goldfire/howler.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
+
+
+
+	<!-- My JS files -->
+	<script src="js/utilities.js"></script>
+	<script src="js/engineClasses.js"></script>
+	<script src="js/uiClasses.js"></script>
+	<script src="js/raceTrackClasses.js"></script>
+	<script src="js/main.js"></script>
+	<main>
+
+
+		<div class="track-code-area">Paste a Track Code into here and click &quot;Input Track from Code&quot;:
+			<input id="track-code-input" type="text" autofocus value="" />
+			<p>Use a site such as <a href="https://pastebin.com/" target="_blank">Paste Bin</a> to share track codes
+				with friends!</p>
+		</div>
+		<h2>How to Play</h2>
+
+		<div id="controls">
+			<img src="media/controls1.png" alt="Use W to accelerate and the Mouse to steer!">
+			<img src="media/controls2.png" alt="Tap SPACE quickly to drift around tight corners.">
+		</div>
+
+		<div id="how-to-play">
+			<p>
+				S or Shift - Brake/Reverse<br>
+				Escape or R - Pause<br>
+				E - Toggle Auto-Accelerate<br>
+				Q - Use Mirror<br>
+			</p>
+
+		</div>
+
+		<div id="game-info">
+
+			<a class="button-link" href="about.html" target="_blank">Learn about the development process and go behind
+				the scenes!</a>
+
+			<p>
+				Music used: &quot;Everybody Falls&quot; and &quot;Final Fall&quot; from Fall Guys<br>
+				Sound Effects from: Fall Guys and Half-Life 2
+			</p>
+
+		</div>
+
+
+	</main>
+	<footer>
+		<p>Nick Baker 2020</p></br>
+		<p>Goldman font by Jaikishan Patel, obtained through Google.</p>
+		<p>Roboto font by Christian Robertson, obtained through Google.</p>
+	</footer>
+</body>
+
+</html>

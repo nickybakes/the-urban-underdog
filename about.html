@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Development of The Urban Underdog - Nick Baker</title>
+	<link rel="icon" type="image/png" sizes="32x32" href="media/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="media/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="media/favicon-16x16.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Goldman&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/aboutStyle.css">
+</head>
+
+<body>
+    <header>
+        <h1><img class="logo" src="media/urban-underdog-logo.png" alt="The Urban Underdog logo."></h1>
+    </header>
+
+    <p>Behind the scenes of the high-speed, high-intensity driving game that utilizes a homemade 3D graphics engine built on top of PixiJS's 2D
+        rendering engine. Developed by Nick Baker, 2020.</p>
+
+    <a class="button-link" href="index.html" target="_blank">Play the game here!</a>
+
+    <h2>Vectors, Matrices, and Projections</h2>
+    <p>In late September, I started experimenting with writing my own 3D graphics rendering engine in C#. I spent about
+        a week bodging together the correct vector and matrix math required to make 3D projections work with a
+        free-moving, free-rotating camera. The idea had potentional, but it was going to take a lot of work to turn it
+        into a full game.</p>
+
+    <div class="image-grid2">
+        <img src="media/about-3d-1.jpg" alt="A yellow wireframe cube">
+        <img src="media/about-3d-2.jpg" alt="A checkerboard texture floor and a twisted skybox texture.">
+        <p>Early test of perspective projections with a wireframe cube.</p>
+        <p>My first attempts at rasterizing textures were really inefficient, but it did look cool when polygons got
+            twisted.</p>
+    </div>
+
+
+    <p>I rewrote this projection code to work in JavaScript in late November, but I also added more features to it.
+        These included rasterization: taking points on the screen and filling in the shape they create with colored
+        pixels, back-face-culling: only drawing the polygons/faces of a mesh that are facing towards the camera, and
+        depth buffering: storing a
+        depth value per pixel that helps determine which pixel of each polygon is closest to the camera and should
+        therefore me rendered in front. I created a little &quot;cube demo&quot; to show off this work, of which ran at
+        a resolution
+        of 128x72.</p>
+
+    <!-- External libraries -->
+    <!-- https://github.com/pixijs/pixi.js?utm_source=html5weekly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.3/pixi.min.js"></script>
+    <!--  https://github.com/goldfire/howler.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
+
+
+
+    <!-- My JS files -->
+    <script src="js/utilities.js"></script>
+    <script src="js/engineClasses.js"></script>
+    <script src="js/cubeDemo.js"></script>
+
+
+    <p>All of these features were tough, geometrical challenges in their own right, but I learned a lot from solving
+        them.
+        Specifically, when dealing a lot with triangles (tris), I had to learn how barycentric coordinates worked, and
+        how to convert between space coordinates and barycentric coordinates. I use barycentric
+        coordinates during the rasterization process, as it tells me where on a 3D tri a specific screen pixel is
+        pointing to.
+        This means I can interpolate between the depth values of each vertex of a tri, but it also means I can convert a
+        pixel on screen to a pixel in a texture map. I did not end up implementing texture maps in the final product,
+        but the foundation is there for my system to be scaled up to that level.</p>
+
+    <p>I did a lot of research to figure all of this out, and I don't have all of the resources I learned from saved,
+        but here are some pages I remember looking at:
+    </p>
+
+    <ul>
+        <li>
+            <a href="https://en.wikipedia.org/wiki/3D_projection#Perspective_projection" target="_blank">Wikipedia on
+                Perspective Projection</a>
+        </li>
+        <li>
+            <a href="https://math.stackexchange.com/questions/13272/how-would-i-create-a-rotation-matrix-that-rotates-x-by-a-y-by-b-and-z-by-c"
+                target="_blank">Forums such as Stack Exchange, this one is about rotation matrices</a>
+        </li>
+        <li>
+            <a href="https://www.youtube.com/watch?v=HYAgJN3x4GA&ab_channel=SebastianLague" target="_blank">Sebastian
+                Lague on barycentric coordinates</a>
+        </li>
+        <li>
+            <a href="https://www.sidefx.com/docs/houdini/model/primitive_spaces.html#triquad" target="_blank">Houdini
+                Documentation about converting barycentric coordinates (tris) to UV coordinates (quads)</a>
+        </li>
+
+    </ul>
+
+    <h2>Randomly Generated Racetracks</h2>
+    <p>To create the randomly generated racetracks, I loosely followed Gustavo Maciel's article:
+        <a href="https://www.gamasutra.com/blogs/GustavoMaciel/20131229/207833/Generating_Procedural_Racetracks.php"
+            target="_blank">&quot;Generating Procedural Racetracks&quot;</a>.
+        The basic idea is this: I start by placing points randomly within a 2D space, and then I build what is known as
+        a
+        convex hull around those points. To do this, I followed the
+        <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm" target="_blank">Jarvis March Algorithm</a>,
+        published by R. A. Jarvis in 1973. Starting at the point closest to one of the edges of the 2D space, connect
+        that point to the rest of the points, and find the line formed by 2 points that requires the least amount of
+        right turn. Move to that next point that forms that line segment, and repeat, all the way until hitting the
+        starting point again.
+        This forms the basis for the racetrack, just a very simple, closed polygon.
+    </p>
+
+    <div class="image-grid2">
+        <img src="media/about-track1.jpg" alt="A racetrack in the shape of a capital D.">
+        <img src="media/about-track2.jpg" alt="A track with a loop">
+        <p>One of the first tracks I generated. I originally extruded the points inward rather than outward, and that
+            caused them to overlap much more.</p>
+        <p>A track somehow generated with an overlaping loop-d-loop. I really want to do more complex tracks with
+            designs like this in the future.</p>
+    </div>
+
+    <p>
+        I then add points onto line segments that are very long, basically cutting them in half, and I move these points
+        around to create indents in the track that add some variation and barriers the
+        player can drift around. I also push the points away from eachother to make sure the track doesn't overlap
+        itself, though there are times where it still will overlap. I then create a mesh out of these points by
+        extruding the points outwards. &quot;Outwards&quot; is defined by the clockwise-perpendicular normal direction
+        between the 2 points surrounding a point. I also generate a heightmap, which is just height values on the edges
+        of the track that get interpolated between, and I apply those heights to the vertices of the track mesh.
+    </p>
+
+    <div class="image-grid2">
+        <img src="media/about-track3.jpg" alt="A racetrack with even more loops">
+        <img src="media/about-track4.jpg" alt="Greyscale abstract art.">
+        <p>An even crazier track that features even more loops.</p>
+        <p>Jackson Pollock calls this one &quot;Turning Up the Randomness Slider a Bit Too Much&quot;.</p>
+    </div>
+
+    <p>After this track mesh has been generated, and the track 'segments' (the quads that make up the track, you can see
+        this in game as they are all a slightly different shade of grey) have been defined, the track is ready for
+        racing! The physics and 'racing game logic' are all done in a 2D sensse, meaning this game basically acts like a
+        top-down driving game. The height variation of a track is just a visual element, and does not actually
+        contribute
+        any complexity to the physics.</p>
+
+    <div class="image-grid2">
+        <img src="media/about-track5.jpg" alt="Polygons everywhere">
+        <img src="media/about-track6.jpg" alt="A functional racetrack with some height variation">
+        <p>Even just barely adjusting the 'rules' for track generation can produce monstrosities.</p>
+        <p>Finally, a functional track with some cool height variation!</p>
+    </div>
+
+    <h2>Drifting Design</h2>
+    <p>Along with the actual coding challenges I faced, I needed to design car controls that were fun. There is no set
+        guide on how driving physics should work in games, so there was a lot of trial and error in getting the acceleration
+        amount, sensitivity of the steering, and drift ability feeling just right. I found videos like
+        the one below particularly helpful to reference. The drift in &quot;The Urban Underdog&quot; is not quite the same as in
+        real life, or as racer Leona Chin describes it in the video, but it adds a lot of depth to the game, and fixes some of its crucial issues.</p>
+
+    <iframe src="https://www.youtube.com/embed/BuSELXzAAdE" allowfullscreen></iframe>
+
+    <p> First off, the drift fixes the issue with the random racetracks having some very sharp turns: just give the driver the
+        ability to
+        turn really sharply with a manual drift. Along with that, drifting increases your top speed depending on how
+        much you
+        are turning, so an experienced player can string togther multiple drifts, even on straitaways, to pick up
+        tremendous speed. This comes at a cost of more sensitive steering, and one misplaced drift can send you right
+        into a barrier, ruining any time you might have saved. I find this risk vs. reward system super satisfying and keeps the racing very dynamic!
+    </p>
+
+    <h2>Features I'm Proud Of</h2>
+    <p>There are a couple, very simple, quality of life features that I really like. Customizing your car color from the
+        full range of color values is really cool in my opinion, and I utilize local storage to save the users car
+        color! Also, being able to copy and share track codes is a feature I really wanted to implement, and I'm glad I
+        took the time to do it. My friends and I have shared some track codes with each other, and are seeing who can
+        get the best lap time on them. I saved and labeled
+        a couple of my favorites, such as <a href="https://pastebin.com/H3qvjWs0" target="_blank">&quot;Drift
+            Heavy&quot;</a>,
+        <a href="https://pastebin.com/7umpyG1W" target="_blank">&quot;Craziness&quot;</a>, and
+        <a href="https://pastebin.com/t6tKTS78" target="_blank">&quot;The High Ground&quot;</a>.
+    </p>
+    <p>
+        What is even cooler than just sharing these codes with friends however, is that because these codes are just
+        coordinates
+        for vertices on the track, a very dedicated user could create their own custom tracks by editing a randomly
+        generated
+        track code, or by writing one from scratch. Someone could create tracks to practice specific tricks in the game
+        like drifting, or something could make one huge gauntlet track that takes minutes to complete! It makes me
+        excited just thinking about all of the possibilities such a simple system as shareable track codes brings to the
+        table.
+    </p>
+
+    <div class="image-grid2">
+        <img src="media/about-beta1.jpg" alt="A racetrack with a warm background">
+        <img src="media/about-beta2.jpg" alt="Greyscale abstract art.">
+        <p>I spent a while getting the camera in just the right spot to be close to the action but high enough to show
+            the track in front of them.</p>
+        <p>Before I spent the time to manually enter vertex coordinates for a racecar mesh, I just used the 'Rubik's
+            Cube' model I made for the cube demo shown earlier.</p>
+    </div>
+
+
+
+    <h2>In Hindsight</h2>
+    <p>In hindsight, some of these ideas were way out there, such as &quot;simple textures and lighting&quot; or even
+        computer
+        controlled racers. I managed to make do with flat colored polygons rather than textured ones, but with how I
+        wrote my rasterization code, it could be scaled up to work with a model's UV map to display textures, or any
+        other kind of data maps such as normal maps! Currently, I just do not have time, energy, or need to expand
+        the graphics system to that level.</p>
+
+    <p>With computer controlled racers (bots), I thought up many ideas on how they could work, but they just did not end
+        up fitting the final design of the game. In the final version of the game, the real challenge is going as fast
+        as you can with a slippery car on race tracks that can have very tight spaces and sharp corners. Bots would just
+        end up clogging up the track. Not only that, but simulating bot AI, calculating physics for that many
+        players, and displaying that many models on screen would probably bring the frame rate to a halt. Overall, bots would
+        have taken away more from the experience than added.</p>
+
+    <p>You can read my initial ambitions below, in my 'Initial Proposal':</p>
+
+    <h1>The Initial Proposal</h1>
+
+    <h2>The Concept</h2>
+    <p>Drive your high speed racecar in randomly generated tracks and dethrone the champions of the urban racing scene
+        as the Urban Underdog!</p>
+
+    <h2>Genre</h2>
+    <p>Racing, Arcade. The game is about driving a racecar, and will act similarly to those racing arcade cabinets.</p>
+
+    <h2>Platform</h2>
+    <p>The game is meant to be played on Desktop with keyboard and mouse.</p>
+
+    <h2>Story</h2>
+    <p>In Urban Underdog, you play as the underdog driver that no one bets on or believes in. It is time to prove them
+        wrong. The game will be designed so that you start in last place, and work your way up to first place, and by
+        the end of the race you just barely make it. Players will feel the thrill. Other than that, there is no actual
+        story to follow.</p>
+
+    <h2>Aesthetics</h2>
+    <p>The game will be set on a pixelated display, with pseudo 3D graphics. There will be very simple textures and
+        lighting on some of the objects (such as the player's car), but overall almost everything will be represented
+        with colorful, flat shading. Before starting the race, the player will be able to customize the color of their
+        car with RGB sliders.</p>
+
+    <h2>Gameplay</h2>
+    <p>Players will drive multiple laps around randomly generated race tracks moving the mouse left and right to steer,
+        pressing the W key as the gas pedal, and Space Bar as the breaks. They will also be able to press Shift to turn
+        the camera around and
+        see behind them. The current goal is to make the player racer against 7
+        CPU-controlled opponents, but if there is not enough time to develop that, the player can just go for their best
+        time in a Time Trials gamemode.</p>
+
+    <h2>Mockups</h2>
+    <p>I've already started developing the pseudo-3D graphics 'engine' for the game. I'm using vector, matrix, and
+        projection math I
+        learned last semester, as well as what we've learned of PixiJS in the Circle Blast HW. You can view a demo of my
+        3D graphics here: <a href="https://people.rit.edu/nmb9745/235/project3/cube-demo" target="_blank">Cube Demo.</a>
+    </p>
+    <div id="mockups">
+        <img src="media/mockup1.jpg" alt="A crude drawing of a yellow racecar on a race track.">
+        <img src="media/mockup2.jpg" alt="A crude drawing of the mesh of a 3D race track model.">
+    </div>
+
+    <p>On the Left: a mock up of what the player will see in game. The camera will be behind the player, and the HUD
+        will show speed, place in the race, a map, lap count, and the player's hands on the wheel that will rotate when
+        the player
+        steers by moving the mouse left or right. If they are playing the Time Trials gamemode, display stopwatch time
+        instead of their place in the race.</p>
+    <p>On the Right: after the game generates the track, it will show the user a 3D version of the track that rotates
+        around. If they like it and want to play it, they can click 'Play'. If not, they can regenerate the track!</p>
+
+    <h2>Other Notes</h2>
+    <p>While the overall project is complicated, it is made up of rather simple smaller parts. I've already gotten
+        started on my 3D graphics (see <a href="https://people.rit.edu/nmb9745/235/project3/cube-demo"
+            target="_blank">demo</a>), and I have a solid foundation with 3D projections, back-face-culling, and mesh
+        creation. By the due date, I will
+        have a fun, working version ready, but if I have extra time, then I will be able to implement some more complex
+        features such as CPU controlled players, more complicated race tracks, saving/sharing generated race tracks, and
+        other visual and audio effects.</p>
+
+    <h2>About the Developer</h2>
+    <p>I'm Nick Baker, a second year Game Design and Development major and 3D Digital Design minor at RIT. I'm
+        interested in pushing my art, programming, and design skills to make unique and expressive works.</p>
+    <footer>
+        <p>Nick Baker 2020</p></br>
+        <p>Goldman font by Jaikishan Patel, obtained through Google.</p>
+        <p>Roboto font by Christian Robertson, obtained through Google.</p>
+    </footer>
+</body>
+
+</html>
