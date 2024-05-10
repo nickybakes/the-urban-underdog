@@ -5,7 +5,8 @@ You can play the game in your browser here: https://nickmbaker.com/urban-underdo
 
 - The goal of this game was to show off the 3D engine. I chose a racing game because the physics and level/track designs are simple compared to other game genres
 - The gameplay/controls are very simple: you just steer by moving the mouse left and right and tap space to drift around sharp turns
-- Despite its simplicity, the game takes time to master, and smashing your car into walls leads to some very comedic moments
+- Despite its simplicity, the game takes time to master
+- Smashing your car into walls leads to some very comedic moments, but you also get a really good feeling when you make it through a run cleanly
 - Track codes can be customized to build your own tracks, and I liked the idea of a community sharing fun tracks and challenges with each other.
 
 The 3D engine is built in Javascript and runs on the CPU. I used vector math to figure out 3D projections, barycentric coordinates, rasterization, and the Jarvis March Algorithm to create the engine and game.
