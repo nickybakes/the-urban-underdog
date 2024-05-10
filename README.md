@@ -8,7 +8,7 @@ You can play the game in your browser here: https://nickmbaker.com/urban-underdo
 - Despite its simplicity, the game takes time to master, and smashing your car into walls leads to some very comedic moments
 - Track codes can be customized to build your own tracks, and I liked the idea of a community sharing fun tracks and challenges with each other.
 
-The 3D engine is built in Javascript and runs on the CPU. I used vector math to figure out 3D projections, barycentric coordinates, rasterization, and the Jarvis March Algorithm to crate the game.
+The 3D engine is built in Javascript and runs on the CPU. I used vector math to figure out 3D projections, barycentric coordinates, rasterization, and the Jarvis March Algorithm to create the engine and game.
 
 I designed and developed this game/engine in about a month and released the game in December 2020.
 
