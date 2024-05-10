@@ -15,8 +15,10 @@ I designed and developed this game/engine in about a month and released the game
 ![How to play](https://github.com/nickybakes/the-urban-underdog/assets/47609027/94445bd8-5e02-4e0b-bc90-81b8dc8f3c3c)
 
 Below is a demo video of the game and a video that goes into more depth about the math needed to make a custom 3D rendering engine and randomly generated race tracks.
+
 https://github.com/nickybakes/the-urban-underdog/assets/47609027/4bd7e6b6-5613-4ca8-8ff5-ebb79ab5c02b
 
 This video goes into more depth about the 3D engine and the vector math I learned for it.
+
 https://github.com/nickybakes/the-urban-underdog/assets/47609027/8305fa80-d294-433f-b4a4-89827d5e8c0b
 
