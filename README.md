@@ -4,7 +4,7 @@ The Urban Underdog is an arcade style, 3D racecar driving game where you go for 
 You can play the game in your browser here: https://nickmbaker.com/urban-underdog/
 
 - The goal of this game was to show off the 3D engine. I chose a racing game because the physics and level/track designs are simple compared to other game genres
-- The gameplay is very simple, you steer by moving the mouse left and right, and you tap space to drift around sharp turns
+- The gameplay/controls are very simple: you just steer by moving the mouse left and right and tap space to drift around sharp turns
 - Despite its simplicity, the game takes time to master, and smashing your car into walls leads to some very comedic moments
 - Track codes can be customized to build your own tracks, and I liked the idea of a community sharing fun tracks and challenges with each other.
 
